@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   Text,
-  View,
   FlatList,
-  Image,
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
@@ -13,15 +11,28 @@ import {
 import Episode from "./components/Episode";
 
 export default function App() {
+  let moviesObject: {
+    title: string;
+    episode_number: string;
+    main_characters?: string[];
+    description?: string;
+    poster_image?: string;
+    hero_image: string;
+  }[] = [];
+
   const listRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [movies, setMovies] = useState<any[]>([]);
-  const [sort, setSort] = useState("ascending");
+  const [movies, setMovies] = useState(moviesObject);
+  const [sort, setSort] = useState<"ascending" | "descending">("ascending");
 
   // smooth transition once sort is called
   function scrollToTop(): void {
     if (Platform.OS === "ios" || Platform.OS === "android") {
-      listRef.current.scrollTo({ x: 0, y: 0, animated: true });
+      listRef.current.scrollTo({
+        x: 0,
+        y: 0,
+        animated: true,
+      });
     } else {
       window.scrollTo({
         top: 0,
@@ -35,23 +46,29 @@ export default function App() {
       "https://raw.githubusercontent.com/RyanHemrick/star_wars_movie_app/master/movies.json"
     )
       .then((res) => res.json())
-      .then((res) => setMovies(res.movies))
-      .then(() => setIsLoading(false));
+      .then((res) => {
+        setMovies(res.movies);
+        setIsLoading(false);
+      });
   }, []);
 
   const renderItem = ({
     item,
   }: {
-    item: { title: string; episode_number: string; hero_image: string };
+    item: {
+      title: string;
+      episode_number: string;
+      hero_image: string;
+    };
   }) => <Episode episode={item} />;
 
   function sortListById(): void {
     const copiedMovies = [...movies];
     copiedMovies.sort((obj1, obj2) => {
       if (sort === "ascending") {
-        return obj2.episode_number - obj1.episode_number;
+        return Number(obj2.episode_number) - Number(obj1.episode_number);
       } else {
-        return obj1.episode_number - obj2.episode_number;
+        return Number(obj1.episode_number) - Number(obj2.episode_number);
       }
     });
 

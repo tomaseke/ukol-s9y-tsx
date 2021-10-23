@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   image: {
@@ -17,20 +17,24 @@ const styles = StyleSheet.create({
   },
 });
 
-type Movie = {
+interface EpisodeProps {
   episode: {
     title: string;
-    episode_number: string;
+    episode_number: string | number;
     hero_image: string;
   };
-};
+}
 
-const Episode = ({ episode: { title, episode_number, hero_image } }: Movie) => {
+const Episode = ({
+  episode: { title, episode_number, hero_image },
+}: EpisodeProps) => {
   return (
     <>
       <View style={styles.episode}>
         <Image
-          source={require(`../assets/images/${hero_image}`)}
+          source={{
+            uri: `https://raw.githubusercontent.com/RyanHemrick/star_wars_movie_app/master/public/images/${hero_image}`,
+          }}
           style={styles.image}
         />
         <View style={styles.textContainer}>
