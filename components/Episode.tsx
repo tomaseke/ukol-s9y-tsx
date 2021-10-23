@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 interface EpisodeProps {
   episode: {
     title: string;
-    episode_number: string | number;
+    episode_number: string;
     hero_image: string;
   };
 }
