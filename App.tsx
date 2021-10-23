@@ -11,7 +11,7 @@ import {
 import Episode from "./components/Episode";
 
 export default function App() {
-  let moviesObject: {
+  let moviesArray: {
     title: string;
     episode_number: string;
     main_characters?: string[];
@@ -22,7 +22,7 @@ export default function App() {
 
   const listRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [movies, setMovies] = useState(moviesObject);
+  const [movies, setMovies] = useState(moviesArray);
   const [sort, setSort] = useState<"ascending" | "descending">("ascending");
 
   // smooth transition once sort is called
