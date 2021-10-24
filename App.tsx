@@ -84,7 +84,7 @@ export default function App() {
 
         {!isLoading && (
           <ScrollView ref={listRef}>
-            <Text style={styles.heading as any}>Star Wars movies</Text>
+            <Text style={styles.heading as object}>Star Wars movies</Text>
             <FlatList
               data={movies}
               extraData={sort}
