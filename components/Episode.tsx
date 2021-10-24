@@ -2,15 +2,18 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  image: {
-    width: 350,
-    height: 450,
-    maxWidth: "95vw",
-  },
   episode: {
     margin: "20px",
     border: "1px solid black",
+    width: 351,
+    marginRight: "auto",
+    marginLeft: "auto",
     maxWidth: "95vw",
+  },
+  image: {
+    maxWidth: "95vw",
+    height: 450,
+    width: 350,
   },
   textContainer: {
     margin: 10,

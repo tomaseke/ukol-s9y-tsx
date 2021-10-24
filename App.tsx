@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
-  Platform,
+  Dimensions,
 } from "react-native";
 import Episode from "./components/Episode";
 
@@ -27,18 +27,11 @@ export default function App() {
 
   // smooth transition once sort is called
   function scrollToTop(): void {
-    if (Platform.OS === "ios" || Platform.OS === "android") {
-      listRef.current!.scrollTo({
-        x: 0,
-        y: 0,
-        animated: true,
-      });
-    } else {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }
+    listRef.current!.scrollTo({
+      x: 0,
+      y: 0,
+      animated: true,
+    });
   }
   // get movies into state variable
   useEffect(() => {
@@ -47,7 +40,14 @@ export default function App() {
     )
       .then((res) => res.json())
       .then((res) => {
-        setMovies(res.movies);
+        setMovies(
+          res.movies.sort(
+            (
+              obj1: { episode_number: string },
+              obj2: { episode_number: string }
+            ) => Number(obj1.episode_number) - Number(obj2.episode_number)
+          )
+        );
         setIsLoading(false);
       });
   }, []);
@@ -64,14 +64,7 @@ export default function App() {
 
   function sortListById(): void {
     const copiedMovies = [...movies];
-    copiedMovies.sort((obj1, obj2) => {
-      if (sort === "ascending") {
-        return Number(obj2.episode_number) - Number(obj1.episode_number);
-      } else {
-        return Number(obj1.episode_number) - Number(obj2.episode_number);
-      }
-    });
-
+    copiedMovies.reverse();
     setSort(sort === "ascending" ? "descending" : "ascending");
     setMovies(copiedMovies);
     scrollToTop();
@@ -83,7 +76,7 @@ export default function App() {
         {isLoading && <Text>Loading...</Text>}
 
         {!isLoading && (
-          <ScrollView ref={listRef}>
+          <ScrollView style={styles.flatlist} ref={listRef}>
             <Text style={styles.heading as object}>Star Wars movies</Text>
             <FlatList
               data={movies}
@@ -108,11 +101,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: "30px",
-    marginBottom: "30px",
+  },
+  flatlist: {
+    height: 1,
+    width: Dimensions.get("window").width,
   },
   heading: {
     marginBottom: "30px",
