@@ -20,7 +20,7 @@ export default function App() {
     hero_image: string;
   }[] = [];
 
-  const listRef = useRef(null);
+  const listRef = useRef<ScrollView>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [movies, setMovies] = useState(moviesArray);
   const [sort, setSort] = useState<"ascending" | "descending">("ascending");
@@ -28,7 +28,7 @@ export default function App() {
   // smooth transition once sort is called
   function scrollToTop(): void {
     if (Platform.OS === "ios" || Platform.OS === "android") {
-      listRef.current.scrollTo({
+      listRef.current!.scrollTo({
         x: 0,
         y: 0,
         animated: true,
@@ -83,7 +83,7 @@ export default function App() {
         {isLoading && <Text>Loading...</Text>}
 
         {!isLoading && (
-          <ScrollView ref={listRef as any}>
+          <ScrollView ref={listRef}>
             <Text style={styles.heading as any}>Star Wars movies</Text>
             <FlatList
               data={movies}
